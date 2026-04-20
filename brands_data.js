@@ -862,3 +862,4 @@ const brandGroups = [
     brands: ["tesla", "ferrari", "pagani", "mclaren", "astonmartin", "koenigsegg", "mazda", "byd", "nio", "kgmobility"]
   }
 ];
+
