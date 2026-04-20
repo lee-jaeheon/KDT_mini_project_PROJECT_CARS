@@ -859,6 +859,6 @@ const brandGroups = [
   {
     nameKo: "독립 브랜드",
     nameEn: "Independent",
-    brands: ["tesla", "ferrari", "pagani", "mclaren", "astonmartin", "koenigsegg", "mazda", "byd", "nio"]
+    brands: ["tesla", "ferrari", "pagani", "mclaren", "astonmartin", "koenigsegg", "mazda", "byd", "nio", "kgmobility"]
   }
 ];
