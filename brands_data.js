@@ -799,7 +799,7 @@ const brandGroups = [
   {
     nameKo: "현대자동차그룹",
     nameEn: "Hyundai Motor Group",
-    brands: ["hyundai", "kia", "genesis", "kgmobility"]
+    brands: ["hyundai", "kia", "genesis"]
   },
   {
     nameKo: "폭스바겐그룹",
