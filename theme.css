@@ -1,0 +1,419 @@
+/* ================================================
+   PROJECT CARS — 공통 테마 파일
+   팀원 모두 이 파일을 <link>로 연결해서 사용하세요
+
+   사용법:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="theme.css">
+================================================ */
+
+
+/* ================================================
+   1. CSS 변수
+================================================ */
+
+:root {
+  --color-bg-main:        #151350;
+  --color-bg-footer:      #F5F2ED;
+  --color-bg-card:        #1C1A68;
+  --color-bg-overlay:     rgba(21, 19, 80, 0.52);
+
+  --color-text-primary:   #FFFFFF;
+  --color-text-secondary: rgba(255, 255, 255, 0.55);
+  --color-text-footer:    #1A1A1A;
+  --color-text-muted:     rgba(255, 255, 255, 0.3);
+
+  --color-gold:           #B8A96A;
+  --color-sambo:          #2B6CB8;
+  --color-sambo-light:    #5FA3E0;
+
+  --color-border:         rgba(255, 255, 255, 0.12);
+  --color-border-sambo:   #2B6CB8;
+
+  --font-display:  'Bebas Neue', sans-serif;
+  --font-body:     'Noto Sans KR', sans-serif;
+
+  --max-width:     1400px;
+  --nav-height:    80px;
+  --radius-sm:     6px;
+  --radius-md:     12px;
+  --radius-lg:     20px;
+  --radius-pill:   999px;
+
+  --spacing-xs:    8px;
+  --spacing-sm:    16px;
+  --spacing-md:    32px;
+  --spacing-lg:    48px;
+  --spacing-xl:    120px;
+}
+
+
+/* ================================================
+   2. 리셋 & 기본 스타일
+================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+
+/* ================================================
+   3. 네비게이션 바 (공통)
+   index.html  → <style>에서 position: absolute / transparent 로 덮어쓰기
+   template.html → 이 스타일 그대로 사용 (fixed + 반투명)
+================================================ */
+
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 80px;
+  background: rgba(21, 19, 80, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 72px;
+}
+
+.nav-right { justify-content: flex-end; }
+
+.nav-logo {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.nav-logo img {
+  height: 100px;
+  width: auto;
+}
+
+.nav-logo-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: #fff;
+  letter-spacing: 0.1em;
+}
+
+.nav-link {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.nav-link:hover  { color: #fff; }
+.nav-link.active { color: #fff; }
+
+
+/* ================================================
+   4. 하위 페이지 헤더
+================================================ */
+
+.page-header {
+  padding-top: calc(var(--nav-height) + 80px);
+  padding-bottom: 40px;
+  padding-left: 80px;  /* 왼쪽 여백 늘리기 */
+  padding-right: 56px;
+}
+
+.page-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.page-title {
+  font-size: clamp(36px, 5vw, 64px);  /* 크기 줄이기 */
+  font-family: var(--font-display);
+  color: var(--color-text-primary);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+
+/* ================================================
+   5. 섹션
+================================================ */
+
+.section {
+  padding: var(--spacing-lg) 56px;
+  border-top: 1px solid var(--color-border);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-md);
+}
+
+
+/* ================================================
+   6. 카드
+================================================ */
+
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+
+/* ================================================
+   7. 삼보모터스 배지
+================================================ */
+
+.sambo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(43, 108, 184, 0.15);
+  border: 1px solid var(--color-border-sambo);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-sambo-light);
+}
+
+.sambo-badge::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--color-sambo);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+
+/* ================================================
+   8. 버튼
+================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-text-primary);
+  color: var(--color-bg-main);
+}
+.btn-primary:hover { background: rgba(255,255,255,0.88); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+.btn-outline:hover { background: rgba(255,255,255,0.08); }
+
+.btn-gold {
+  background: transparent;
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold);
+}
+.btn-gold:hover { background: rgba(184,169,106,0.1); }
+
+
+/* ================================================
+   9. 푸터 (모든 페이지 동일)
+================================================ */
+
+.footer {
+  background: #F5F2ED;
+  color: #1A1A1A;
+  padding: 32px 56px 10px;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 1px;
+}
+
+.footer-project-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 50px;
+  color: #151350;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.footer-tagline {
+  font-size: 15px;
+  color: rgba(0,0,0,0.4);
+  letter-spacing: 0.03em;
+}
+
+.footer-knu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-knu img {
+  height: 40px;
+  width: auto;
+}
+
+.footer-knu-text {
+  font-size: 15px;
+  color: rgba(0,0,0,0.45);
+  line-height: 1.6;
+  text-align: right;
+}
+
+.footer-knu-text strong {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.65);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+  margin-bottom: 1px;
+}
+
+.footer-label {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.footer-team-name {
+  font-size: 25px;
+  font-weight: 700;
+  color: #151350;
+}
+
+.footer-members {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 32px;
+}
+
+.footer-member {
+  border-left: 2px solid #151350;
+  padding-left: 12px;
+}
+
+.footer-member-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 2px;
+}
+
+.footer-member-role {
+  font-size: 15px;
+  color: rgba(0,0,0,0.45);
+}
+
+.footer-bottom {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: rgba(0,0,0,0.3);
+}
+
+
+/* ================================================
+   10. 반응형
+================================================ */
+
+@media (max-width: 768px) {
+  .nav { padding: 0 20px; }
+  .nav-left, .nav-right { gap: 20px; }
+  .nav-link { font-size: 11px; }
+  .page-header, .section { padding-left: 20px; padding-right: 20px; }
+  .footer { padding: 32px 20px 10px; }
+  .footer-top { flex-direction: column; gap: 16px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+  .footer-members { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .nav-left, .nav-right { gap: 14px; }
+  .nav-link { font-size: 11px; }
+  .nav-logo img { height: 28px; }
+}

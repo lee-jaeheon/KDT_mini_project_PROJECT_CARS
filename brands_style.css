@@ -1,0 +1,952 @@
+/* ================================================================
+   brands.html 전용 스타일
+   * theme.css는 건드리지 않고, 이 페이지에만 필요한 스타일만 여기에 작성
+   * 모든 색상/폰트는 theme.css의 CSS 변수(--color-xxx, --font-xxx)를 재사용
+================================================================ */
+
+
+/* ================================================================
+   [0] 뮤지엄 히어로 — history.html 스타일 참고 (풀스크린 인트로)
+================================================================ */
+
+/* 히어로 전체 영역 */
+.museum-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0 80px;
+  overflow: hidden;
+}
+
+/* 좌우 분할 내부 래퍼 */
+.museum-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 40px;   /* 네비게이션 바 높이 보정 */
+}
+
+/* 우측 차량 이미지 — 절대 위치로 배치 */
+.museum-hero-car {
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 420px;
+  height: 420px;
+}
+
+.hero-logo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.8s ease;
+}
+
+/* 중앙에 보이는 상태 */
+.hero-logo-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* 왼쪽으로 밀리며 사라지는 상태 */
+.hero-logo-exit {
+  transform: translateX(-420px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 오른쪽 대기 (투명) */
+.hero-logo-standby {
+  transform: translateX(420px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes heroCar {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* 배경 이미지 자리 — images/brands_hero_bg.jpg 파일을 넣으면 적용됨 */
+.museum-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('images/brands_hero_bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: #0a0920;   /* 이미지 없을 때 기본 어두운 색 */
+  filter: brightness(0.45);
+  transform: scale(1.04);
+  transition: transform 8s ease;
+}
+
+/* 호버 시 배경이 천천히 커지는 Ken Burns 효과 */
+.museum-hero:hover .museum-hero-bg { transform: scale(1); }
+
+/* 하단 그라디언트 페이드 — 히어로와 본문 섹션의 자연스러운 연결 */
+.museum-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 30%,
+    rgba(21, 19, 80, 0.5) 70%,
+    var(--color-bg-main) 100%
+  );
+  pointer-events: none;
+}
+
+/* 좌측 텍스트 영역 */
+.museum-hero-content {
+  flex-shrink: 0;
+  width: 42%;
+}
+
+/* "Project Cars — Brands" 상단 태그 */
+.museum-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 태그 앞 골드 가로선 */
+.museum-tag::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--color-gold);
+}
+
+/* 히어로 메인 타이틀 */
+.museum-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 6.5vw, 92px);
+  color: var(--color-text-primary);
+  line-height: 1.0;
+  letter-spacing: 0.02em;
+  margin-bottom: 20px;
+}
+
+/* 히어로 부제목 */
+.museum-hero-desc {
+  max-width: 480px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.85;
+}
+
+/* 스크롤 다운 인디케이터 — 우하단 고정 */
+.scroll-indicator {
+  position: absolute;
+  bottom: 36px;
+  right: 56px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* 위아래로 숨쉬는 애니메이션 골드 선 */
+.scroll-line {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--color-gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50%       { opacity: 1;   transform: scaleY(1.1); }
+}
+
+
+/* ================================================================
+   [A] 세계지도 섹션
+================================================================ */
+
+/* 지도 전체를 감싸는 박스 */
+.map-wrapper {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-top: 20px;
+  position: relative;  /* 툴팁/줌 버튼의 absolute 기준점 */
+}
+
+/* 지도 상단 요약 바 */
+.map-stats {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.map-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.map-stat-value {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--color-gold);
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.map-stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+/* 지도 컨테이너 — 줌/툴팁의 부모 역할 */
+.map-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;          /* 지도가 줌될 때 박스 밖으로 넘치지 않도록 */
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.15);   /* 아주 살짝 어두운 바다색 느낌 */
+}
+
+.world-map {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: default;
+}
+
+.world-map:active { cursor: grabbing; }
+
+/* 국가 path 기본 스타일 — D3가 생성한 path에 적용 */
+.world-map .country {
+  fill: rgba(255, 255, 255, 0.08);
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 0.5;
+  transition: fill 0.2s;
+  vector-effect: non-scaling-stroke;  /* 줌 해도 테두리 굵기 일정 유지 */
+}
+
+/* 브랜드 본사가 있는 국가는 살짝 밝은 골드 틴트로 강조 */
+.world-map .country.has-brand {
+  fill: rgba(184, 169, 106, 0.12);
+  stroke: rgba(184, 169, 106, 0.3);
+}
+
+/* 마커 그룹 — 이중 원 + pulse 구조 */
+.world-map .marker-group {
+  cursor: default;
+}
+
+/* ① pulse 링 — 바깥으로 퍼지며 사라지는 애니메이션 */
+.world-map .marker-pulse {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: markerPulse 2.4s ease-out infinite;
+}
+
+@keyframes markerPulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0;   }
+}
+
+/* ② 외부 링 — 항상 보이는 테두리 원 */
+.world-map .marker-ring {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.75;
+  transition: stroke 0.15s, opacity 0.15s;
+}
+
+/* ③ 내부 점 — 중심 채워진 원 */
+.world-map .marker-dot {
+  fill: var(--color-gold);
+  transition: fill 0.15s;
+}
+
+/* 호버 시 흰색으로 강조 */
+.world-map .marker-group:hover .marker-ring {
+  stroke: #FFFFFF;
+  opacity: 1;
+}
+.world-map .marker-group:hover .marker-dot {
+  fill: #FFFFFF;
+}
+
+
+/* 지도 툴팁 */
+.map-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(21, 19, 80, 0.98);
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -100%) translateY(-10px);
+  transition: opacity 0.15s;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.map-tooltip.show { opacity: 1; }
+
+.map-tooltip-country {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--color-gold);
+  margin-bottom: 4px;
+}
+
+.map-tooltip-brands {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+
+/* 줌 컨트롤 버튼 — 지도 우상단에 플로팅 */
+.zoom-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 5;
+}
+
+.zoom-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(21, 19, 80, 0.9);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.zoom-btn:hover {
+  background: rgba(184, 169, 106, 0.2);
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.zoom-btn:active { transform: scale(0.95); }
+
+/* 리셋 버튼은 조금 작은 글씨 */
+.zoom-btn.zoom-reset { font-size: 11px; letter-spacing: 0.1em; }
+
+
+/* 지도 하단 힌트 */
+.map-hint {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+/* 지도 로딩 중 표시 */
+.map-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  letter-spacing: 0.15em;
+  font-size: 14px;
+}
+
+
+/* ================================================================
+   [B] 국가별 브랜드 섹션
+================================================================ */
+
+.country-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* country-flag-code (ISO 코드 표시)는 사용하지 않음 */
+
+.country-name-ko {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.country-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+  margin-left: auto;
+}
+
+
+/* ================================================================
+   [C] 브랜드 카드 그리드 & 카드
+================================================================ */
+
+/* 4열 고정 — 나라마다 브랜드 수가 달라도 카드 크기가 항상 동일 */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+/* <a> 태그로 카드를 감싸도 링크 기본 스타일(밑줄·파란 색상)이 적용되지 않도록 리셋 */
+.brand-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* brand-tier 배지는 사용하지 않음 (데이터는 보존) */
+
+/* 로고 박스 — 흰 배경으로 어떤 로고 이미지든 선명하게 표시 */
+.brand-logo-box {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: var(--radius-sm);
+  overflow: hidden;    /* 이미지가 박스 밖으로 넘치지 않도록 */
+  padding: 10px 16px;
+}
+
+/* 실제 로고 이미지 */
+.brand-logo-img {
+  height: 48px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* 이미지 로드 실패 시 보여줄 텍스트 폴백 — 평소에는 숨겨둠 */
+.brand-logo-fallback {
+  display: none;       /* onerror 시 JS로 flex로 전환 */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  color: #151350;      /* 흰 배경 위에 진한 네이비 텍스트 */
+  text-align: center;
+}
+
+.brand-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.brand-founded {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+}
+
+.brand-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+  flex: 1;   /* 설명이 길어도 카드 높이를 일정하게 유지 */
+}
+
+/* 핵심 키워드 태그 — history.html brand-tag 스타일 참고 */
+.brand-keyword {
+  display: inline-block;
+  background: rgba(184, 169, 106, 0.10);
+  border: 1px solid rgba(184, 169, 106, 0.30);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 10px;
+  color: var(--color-gold);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* 카드 하단 홈페이지 방문 힌트 — 평소에는 투명, 호버 시 나타남 */
+.brand-visit-hint {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--color-gold);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s, transform 0.25s;
+  margin-top: auto;
+  text-align: right;
+}
+
+.brand-card:hover .brand-visit-hint {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+
+/* ================================================================
+   [D] 삼보모터스 특별 섹션
+================================================================ */
+
+.sambo-highlight {
+  background: linear-gradient(135deg, rgba(43, 108, 184, 0.12) 0%, rgba(95, 163, 224, 0.04) 100%);
+  border: 1px solid var(--color-border-sambo);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* 상단: 로고 + 텍스트 가로 배치 */
+.sambo-header {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.sambo-logo-wrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: var(--radius-sm);
+  padding: 16px 24px;
+  align-self: stretch;
+}
+
+.sambo-logo-img {
+  height: 70px;
+  object-fit: contain;
+}
+
+.sambo-header-text {
+  flex: 1;
+}
+
+.sambo-highlight-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 10px 0 12px;
+  line-height: 1.4;
+}
+
+.sambo-highlight-desc {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.9;
+}
+
+/* 하단: 카드 5개 한 줄 */
+.sambo-items {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 32px;
+}
+
+.sambo-item {
+  background: rgba(21, 19, 80, 0.6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 18px 14px;
+}
+
+.sambo-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-sambo-light);
+  margin-bottom: 6px;
+}
+
+.sambo-item-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+
+/* ================================================================
+   [F] history.html에서 가져온 인터랙션 효과
+================================================================ */
+
+/* 스크롤 진행 바 — 페이지 최상단에 고정, 읽기 진행도를 골드 선으로 표시 */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-gold), rgba(184, 169, 106, 0.5));
+  z-index: 9999;
+  transition: width 0.08s linear;
+  pointer-events: none;   /* 클릭 이벤트 통과 */
+}
+
+/* 스크롤 reveal 애니메이션 — 섹션이 뷰포트에 들어올 때 페이드업 */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* 카드 호버 — history.html의 era-card:hover 수준으로 강화 */
+.brand-card:hover {
+  border-color: rgba(184, 169, 106, 0.5);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 다음 챕터 브릿지 (future.html 링크) */
+.next-chapter-link {
+  display: block;
+  text-decoration: none;
+}
+.next-chapter-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 40px 48px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.25s, transform 0.25s, background 0.25s;
+}
+.next-chapter-link:hover .next-chapter-card {
+  border-color: rgba(184, 169, 106, 0.5);
+  background: rgba(28, 26, 104, 0.85);
+  transform: translateY(-4px);
+}
+.next-chapter-left { flex: 1; }
+.next-chapter-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--color-gold);
+  margin-bottom: 10px;
+}
+.next-chapter-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 48px);
+  color: var(--color-text-primary);
+  line-height: 1;
+  margin-bottom: 14px;
+  letter-spacing: 0.04em;
+}
+.next-chapter-desc {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.85;
+  max-width: 560px;
+}
+.next-chapter-arrow {
+  flex-shrink: 0;
+  transition: transform 0.25s;
+}
+.next-chapter-link:hover .next-chapter-arrow {
+  transform: translateX(6px);
+}
+
+
+/* ================================================================
+   [F-2] 게임 런처 버튼 (brands.html → brands_game.html)
+================================================================ */
+
+.game-launch-area {
+  display: flex;
+  gap: 20px;
+}
+
+.game-launch-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 28px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
+}
+
+.game-launch-btn:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.game-launch-icon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.game-launch-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: var(--color-text-primary);
+}
+
+.game-launch-desc {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+
+/* ================================================================
+   [G] 반응형
+================================================================ */
+
+/* ================================================================
+   [계통도] Brand Hierarchy
+================================================================ */
+
+#hierarchySections {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.hrc-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hrc-root {
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-sm);
+  padding: 14px 28px;
+  text-align: center;
+  min-width: 220px;
+  background: rgba(184, 169, 106, 0.06);
+}
+
+.hrc-independent .hrc-root {
+  border-color: var(--color-border);
+  border-style: dashed;
+  background: transparent;
+}
+
+.hrc-root-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 3px;
+}
+
+.hrc-root-en {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+}
+
+.hrc-independent .hrc-root-en { color: var(--color-text-muted); }
+
+.hrc-root-count {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.hrc-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.hrc-connector-v {
+  width: 1px;
+  height: 24px;
+  background: var(--color-gold);
+  opacity: 0.45;
+}
+
+.hrc-independent .hrc-connector-v { background: var(--color-border); }
+
+.hrc-connector-h {
+  width: 90%;
+  height: 1px;
+  background: var(--color-gold);
+  opacity: 0.45;
+}
+
+.hrc-independent .hrc-connector-h { background: var(--color-border); }
+
+.hrc-brands {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 90%;
+}
+
+.hrc-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+}
+
+.hrc-brand-tick {
+  width: 1px;
+  height: 20px;
+  background: var(--color-gold);
+  opacity: 0.45;
+}
+
+.hrc-independent .hrc-brand-tick { background: var(--color-border); }
+
+.hrc-brand-box {
+  width: 68px;
+  height: 68px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  transition: border-color 0.2s;
+}
+
+.hrc-brand:hover .hrc-brand-box {
+  border-color: rgba(184, 169, 106, 0.5);
+}
+
+.hrc-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hrc-brand-name {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.4;
+  margin-top: 6px;
+  padding: 0 4px;
+}
+
+
+/* ================================================================
+   [G] 반응형
+================================================================ */
+
+@media (max-width: 768px) {
+  /* 계통도 */
+  .hrc-brand { width: 80px; }
+  .hrc-brand-box { width: 54px; height: 54px; }
+  .hrc-connector-h { width: 95%; }
+  .hrc-brands { width: 95%; }
+
+  /* 히어로 */
+  .museum-hero { padding: 0 24px 60px; }
+  .museum-hero-title { font-size: 52px; }
+  .museum-hero-car { display: none; }
+
+  /* 지도 */
+  .map-wrapper { padding: 20px; }
+  .map-stats { gap: 24px; }
+  .map-stat-value { font-size: 26px; }
+
+  /* 카드 */
+  .brand-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* 기타 */
+  .sambo-highlight { padding: 28px; }
+  .sambo-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .sambo-logo-img { height: 60px; }
+  .sambo-items { grid-template-columns: 1fr 1fr; }
+  .country-header { flex-wrap: wrap; }
+  .next-chapter-card { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+  .next-chapter-arrow { align-self: flex-end; }
+}

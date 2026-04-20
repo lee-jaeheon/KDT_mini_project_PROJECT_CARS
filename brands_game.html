@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Cars — 브랜드 게임</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="theme.css" />
+    <link rel="stylesheet" href="brands_game_style.css" />
+  </head>
+
+  <body>
+    <!-- 공통 네비게이션 바 -->
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-link" href="history.html">자동차의 역사</a>
+        <a class="nav-link" href="parts.html">부위별 명칭</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">
+          <img src="logo.png" alt="Project Cars" />
+        </a>
+      </div>
+      <div class="nav-right">
+        <a class="nav-link active" href="brands.html">자동차 브랜드</a>
+        <a class="nav-link" href="future.html">자동차의 미래</a>
+      </div>
+    </nav>
+
+    <!-- ============================================================
+       [화면 1] 게임 선택 화면
+  ============================================================ -->
+    <div id="selectionScreen" class="game-screen">
+      <div class="selection-inner">
+        <div class="game-tag">Project Cars — Game</div>
+        <h1 class="game-main-title">브랜드 게임</h1>
+        <p class="game-subtitle">
+          지금까지 살펴본 51개 브랜드를 얼마나 기억하고 있나요?<br />
+          두 가지 게임으로 실력을 확인해보세요.
+        </p>
+
+        <div class="game-cards">
+          <div class="game-select-card" onclick="startGame('cho')">
+            <div class="game-select-title">초성 퀴즈</div>
+            <div class="game-select-desc">
+              브랜드 이름의 초성을 보고<br />이름을 맞춰보세요
+            </div>
+            <div class="game-select-rounds">10문제</div>
+          </div>
+
+          <div class="game-select-card" onclick="startGame('country')">
+            <div class="game-select-title">국가별 브랜드 퀴즈</div>
+            <div class="game-select-desc">
+              주어진 나라의<br />브랜드를 골라보세요
+            </div>
+            <div class="game-select-rounds">10문제</div>
+          </div>
+        </div>
+
+        <a href="brands.html" class="selection-back-link"
+          >← 브랜드 페이지로 돌아가기</a
+        >
+      </div>
+    </div>
+
+    <!-- ============================================================
+       [화면 2] 게임 진행 화면
+  ============================================================ -->
+    <div id="gameScreen" class="game-screen">
+      <!-- 게임 헤더 (문제 번호 / 게임명 / 점수) -->
+      <div class="game-header">
+        <button class="game-back-btn" onclick="confirmExit()">
+          ← 나가기
+        </button>
+        <span id="gameTitle" class="game-header-title"></span>
+        <div class="game-header-right">
+          <span id="roundDisplay" class="round-display">1 / 10</span>
+          <span id="scoreDisplay" class="score-display">0점</span>
+        </div>
+      </div>
+
+      <!-- 진행 바 -->
+      <div class="game-progress-bar">
+        <div id="progressFill" class="game-progress-fill"></div>
+      </div>
+
+      <!-- 질문 + 보기 + 피드백 -->
+      <div class="game-main">
+        <div id="questionArea" class="question-area"></div>
+        <div id="choicesArea" class="choices-area"></div>
+        <div id="feedbackArea" class="feedback-area"></div>
+        <button
+          id="nextBtn"
+          class="next-btn"
+          onclick="handleNext()"
+          style="display: none"
+        >
+          다음 문제 →
+        </button>
+
+        <button class="exit-mid-btn" onclick="confirmExit()">
+          브랜드 페이지로 돌아가기
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+       [화면 3] 결과 화면
+  ============================================================ -->
+    <div id="resultScreen" class="game-screen">
+      <div class="result-inner">
+        <div id="resultContent"></div>
+        <div class="result-buttons">
+          <button class="result-btn result-btn-primary" onclick="restartGame()">
+            다시 하기
+          </button>
+          <button
+            class="result-btn result-btn-secondary"
+            onclick="goToSelection()"
+          >
+            다른 게임
+          </button>
+          <a href="brands.html" class="result-btn result-btn-ghost"
+            >브랜드 보러 가기</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script src="brands_data.js"></script>
+    <script src="brands_game.js"></script>
+  </body>
+</html>

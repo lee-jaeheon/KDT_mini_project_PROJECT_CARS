@@ -1,0 +1,68 @@
+/* ================================================
+   index.css — 랜딩페이지 전용 스타일
+   theme.css 다음에 로드하세요
+================================================ */
+
+/* 히어로 슬라이드쇼 */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slide.active { opacity: 1; }
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(21, 19, 80, 0.6);
+}
+
+/* 히어로 텍스트 */
+.hero-content {
+  position: absolute;
+  bottom: 110px;
+  left: 72px;
+  z-index: 2;
+}
+
+.hero-title {
+  font-family: 'Audiowide', sans-serif;
+  font-size: clamp(64px, 10vw, 130px);
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.hero-sub {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: clamp(14px, 1.5vw, 18px);
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 12px;
+  letter-spacing: 0.08em;
+}
+.nav {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 10;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}

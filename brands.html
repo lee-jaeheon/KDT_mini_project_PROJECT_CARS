@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Cars — 자동차 브랜드</title>
+
+    <!-- ============================================================
+       [공통] 폰트 & 테마 CSS — template.html과 동일
+  ============================================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="theme.css" />
+
+    <!-- 이 페이지 전용 스타일 -->
+    <link rel="stylesheet" href="brands_style.css" />
+    <link rel="stylesheet" href="brands_game_style.css" />
+
+    <!-- ============================================================
+       [외부 라이브러리] D3.js + TopoJSON (세계지도용)
+  ============================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  </head>
+
+  <body>
+    <!-- 스크롤 진행 바 — 읽기 진행도를 상단 골드 선으로 표시 (history.html에서 가져온 효과) -->
+    <div id="scroll-progress"></div>
+
+    <!-- ============================================================
+       [공통] 네비게이션 바 — 수정 금지
+  ============================================================ -->
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-link" href="history.html">자동차의 역사</a>
+        <a class="nav-link" href="parts.html">부위별 명칭</a>
+      </div>
+      <div class="nav-logo">
+        <a href="index.html">
+          <img src="logo.png" alt="Project Cars" />
+        </a>
+      </div>
+      <div class="nav-right">
+        <a class="nav-link active" href="brands.html">자동차 브랜드</a>
+        <a class="nav-link" href="future.html">자동차의 미래</a>
+      </div>
+    </nav>
+
+    <!-- ============================================================
+       뮤지엄 히어로 — history.html 스타일 참고 (풀스크린 인트로)
+       * 배경 이미지: images/brands_hero_bg.jpg (나중에 넣기)
+       * 차량 이미지: images/brands_hero_car.png (나중에 넣기)
+  ============================================================ -->
+    <section class="museum-hero">
+      <div class="museum-hero-bg"></div>
+
+      <div class="museum-hero-inner">
+        <div class="museum-hero-content">
+          <div class="museum-tag">Project Cars — Brands</div>
+          <h1 class="page-title museum-hero-title">자동차<br />브랜드</h1>
+          <p class="museum-hero-desc">
+            전 세계 자동차 산업을 이끄는 51개 주요 브랜드를 국가별로
+            만나보세요.<br />
+            각 브랜드의 탄생 이야기, 역사, 그리고 오늘의 모습까지 깊이 있게
+            살펴봅니다.
+          </p>
+        </div>
+        <div class="museum-hero-car">
+          <img id="heroCar0" class="hero-logo hero-logo-active" src="" alt="" />
+          <img
+            id="heroCar1"
+            class="hero-logo hero-logo-standby"
+            src=""
+            alt=""
+          />
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <!-- [섹션 1] 세계지도 — brands_map.js가 채워 넣음 -->
+      <div class="section reveal">
+        <div class="section-label">World Headquarters · 본사 분포도</div>
+
+        <div class="map-wrapper">
+          <!-- 지도 컨테이너 -->
+          <div class="map-container">
+            <div class="map-loading" id="mapLoading">LOADING MAP...</div>
+            <svg class="world-map" id="worldMap" style="display: none"></svg>
+
+            <!-- 줌 컨트롤 -->
+            <div class="zoom-controls">
+              <button class="zoom-btn" id="zoomIn" title="확대">+</button>
+              <button class="zoom-btn" id="zoomOut" title="축소">−</button>
+              <button class="zoom-btn zoom-reset" id="zoomReset" title="초기화">
+                ⟲
+              </button>
+            </div>
+
+            <!-- 호버 툴팁 -->
+            <div class="map-tooltip" id="mapTooltip">
+              <div class="map-tooltip-country" id="tooltipCountry"></div>
+              <div class="map-tooltip-brands" id="tooltipBrands"></div>
+            </div>
+          </div>
+
+          <div class="map-hint">
+            마우스 휠로 확대·축소하거나 드래그로 이동할 수 있습니다 · 금색 점에
+            마우스를 올려 브랜드를 확인하세요
+          </div>
+        </div>
+      </div>
+
+      <!-- [섹션 3] 국가별 브랜드 카드 — brands_cards.js가 채워 넣음 -->
+      <div class="section reveal">
+        <div class="section-label">Brands by Country · 국가별 브랜드</div>
+        <div id="countrySections"></div>
+      </div>
+
+      <!-- [섹션 3-5] 브랜드 계통도 — brands_hierarchy.js가 채워 넣음 -->
+      <div class="section reveal">
+        <div class="section-label">Brand Hierarchy · 브랜드 계통도</div>
+        <p
+          style="
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            line-height: 1.9;
+            max-width: 680px;
+            margin-bottom: 40px;
+          "
+        >
+          세계 주요 자동차 그룹과 그 산하 브랜드들의 관계를 한눈에 확인해보세요.
+        </p>
+        <div id="hierarchySections"></div>
+      </div>
+
+      <!-- [섹션 4] 삼보모터스 파트너사 스포트라이트 -->
+      <div class="section reveal">
+        <div class="section-label">Partner Spotlight · 파트너사 소개</div>
+
+        <div class="sambo-highlight">
+          <!-- 상단: 로고 + 텍스트 가로 배치 -->
+          <div class="sambo-header">
+            <div class="sambo-logo-wrap">
+              <img
+                src="images/sambo_logo.png"
+                alt="삼보모터스"
+                class="sambo-logo-img"
+              />
+            </div>
+            <div class="sambo-header-text">
+              <div class="sambo-badge">삼보모터스 · SAMBO MOTORS</div>
+              <div class="sambo-highlight-title">
+                완성차 브랜드 뒤의 또 하나의 주역,
+                <span style="color: var(--color-sambo-light)">삼보모터스</span>
+              </div>
+              <div class="sambo-highlight-desc">
+                위에 소개한 51개 완성차 브랜드들은 모두 수많은 부품 협력사와 함께
+                차를 만듭니다. 삼보모터스는 1976년 설립된 국내 대표 자동차 부품
+                전문기업으로, 파워트레인 핵심 부품을 생산하며 현대자동차그룹을
+                비롯한 글로벌 OEM에 공급하고 있습니다. 전동화 시대에 발맞춰
+                EV용 감속기·모터 하우징 등 미래차 부품으로 사업을 확장하고 있으며,
+                수소전기 하이브리드 UAM 기체(H-31·H-32·H-33)를 자체 개발하며
+                차세대 모빌리티 시장에 도전하고 있습니다.
+              </div>
+            </div>
+          </div>
+
+          <!-- 하단: 5개 카드 한 줄 -->
+          <div class="sambo-items">
+            <div class="sambo-item">
+              <div class="sambo-item-name">트랜스미션 부품</div>
+              <div class="sambo-item-desc">자동·수동변속기 기어 및 샤프트</div>
+            </div>
+            <div class="sambo-item">
+              <div class="sambo-item-name">엔진 부품</div>
+              <div class="sambo-item-desc">캠샤프트, 크랭크샤프트 등</div>
+            </div>
+            <div class="sambo-item">
+              <div class="sambo-item-name">EV 감속기</div>
+              <div class="sambo-item-desc">전기차용 1단 감속기 모듈</div>
+            </div>
+            <div class="sambo-item">
+              <div class="sambo-item-name">모터 하우징</div>
+              <div class="sambo-item-desc">EV 구동 모터 알루미늄 케이스</div>
+            </div>
+            <div class="sambo-item">
+              <div class="sambo-item-name">UAM 기체 개발</div>
+              <div class="sambo-item-desc">수소전기 하이브리드 기체 H-31·H-32·H-33 자체 개발</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- [섹션 5] 브랜드 게임 런처 -->
+      <div class="section reveal">
+        <div class="section-label">Brand Game · 브랜드 게임</div>
+
+        <p
+          style="
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            line-height: 1.9;
+            max-width: 680px;
+            margin-bottom: 32px;
+          "
+        >
+          초성만 보고 브랜드 이름 맞추기, 국가별 브랜드 골라보기
+        </p>
+
+        <div class="game-launch-area">
+          <a href="brands_game.html?mode=cho" class="game-launch-btn">
+            <div class="game-launch-title">초성 퀴즈</div>
+            <div class="game-launch-desc">초성 보고 브랜드 이름 맞추기</div>
+          </a>
+          <a href="brands_game.html?mode=country" class="game-launch-btn">
+            <div class="game-launch-title">국가별 브랜드 퀴즈</div>
+            <div class="game-launch-desc">그 나라의 브랜드 골라보기</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- [섹션 6] 다음 챕터 브릿지 — history.html 스타일 참고 -->
+      <div class="section reveal">
+        <div class="section-label">Next Chapter</div>
+        <a href="future.html" class="next-chapter-link">
+          <div class="next-chapter-card">
+            <div class="next-chapter-left">
+              <div class="next-chapter-tag">CHAPTER 04</div>
+              <div class="next-chapter-title">자동차의 미래</div>
+              <div class="next-chapter-desc">
+                33개 브랜드의 현재를 살펴봤다면, 이제 이들이 향하는 미래를 볼
+                차례입니다.<br />
+                전기차·수소차·자율주행까지 — 모빌리티의 다음 챕터를 함께 확인해
+                보세요.
+              </div>
+            </div>
+            <!-- 오른쪽 화살표 아이콘 — 호버 시 오른쪽으로 이동하는 애니메이션 -->
+            <div class="next-chapter-arrow">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="23"
+                  stroke="rgba(184,169,106,0.35)"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M 18,24 L 30,24 M 25,18 L 31,24 L 25,30"
+                  stroke="#B8A96A"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+        </a>
+      </div>
+    </main>
+
+    <!-- ============================================================
+       [공통] 푸터 — 수정 금지
+  ============================================================ -->
+    <footer class="footer">
+      <div class="footer-top" style="margin-bottom: 35px">
+        <div>
+          <div class="footer-project-title">PROJECT CARS</div>
+          <div class="footer-tagline">자동차의 역사부터 미래 모빌리티까지</div>
+        </div>
+        <div style="text-align: right">
+          <div
+            style="
+              font-size: 20px;
+              font-weight: 600;
+              color: rgba(0, 0, 0, 0.65);
+            "
+          >
+            경북대학교
+          </div>
+          <div style="font-size: 15px; color: rgba(0, 0, 0, 0.45)">
+            KDT 12기
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <div>
+          <div class="footer-label">Team</div>
+          <div class="footer-team-name">으라차차</div>
+        </div>
+        <div>
+          <div class="footer-label">Members</div>
+          <div class="footer-members">
+            <div class="footer-member">
+              <div class="footer-member-name">정준하</div>
+              <div class="footer-member-role">자동차의 역사</div>
+            </div>
+            <div class="footer-member">
+              <div class="footer-member-name">이재헌</div>
+              <div class="footer-member-role">자동차 부위별 명칭</div>
+            </div>
+            <div class="footer-member">
+              <div class="footer-member-name">최규성</div>
+              <div class="footer-member-role">자동차 브랜드</div>
+            </div>
+            <div class="footer-member">
+              <div class="footer-member-name">최혜원</div>
+              <div class="footer-member-role">자동차의 미래</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">으라차차 &nbsp;© 2026 All Rights Reserved</div>
+        <img
+          src="KDT_logo.png"
+          alt="경북대학교 KDT"
+          style="height: 70px; width: auto"
+        />
+      </div>
+    </footer>
+
+    <!-- ============================================================
+       [스크립트 로드 순서]
+       ★ 중요: 데이터 → 로직 → 실행 순서로 불러와야 함
+         ① brands_data.js   (데이터 정의 — 다른 파일들이 참조)
+         ② brands_map.js    (initWorldMap 함수 정의)
+         ③ brands_cards.js  (renderAllCountrySections 함수 정의)
+         ④ 초기화 스크립트 (위 함수들을 호출)
+  ============================================================ -->
+    <script src="brands_data.js"></script>
+    <script src="brands_map.js"></script>
+    <script src="brands_cards.js"></script>
+    <script src="brands_hierarchy.js"></script>
+
+    <!-- 페이지 초기화 — 위에서 정의된 함수들을 순서대로 호출 -->
+    <script>
+      /* ── [0] 히어로 브랜드 로고 슬라이드 전환 ────────── */
+      const HERO_LOGOS = [
+        "hyundai",
+        "kia",
+        "genesis",
+        "porsche",
+        "mercedes",
+        "bmw",
+        "maybach",
+        "audi",
+        "volkswagen",
+        "opel",
+        "lamborghini",
+        "ferrari",
+        "maserati",
+        "pagani",
+        "alfaromeo",
+        "fiat",
+        "rollsroyce",
+        "bentley",
+        "mclaren",
+        "astonmartin",
+        "jaguar",
+        "landrover",
+        "tesla",
+        "ford",
+        "chevrolet",
+        "cadillac",
+        "jeep",
+        "dodge",
+        "toyota",
+        "honda",
+        "nissan",
+        "lexus",
+        "mazda",
+        "acura",
+        "volvo",
+        "koenigsegg",
+        "bugatti",
+        "peugeot",
+        "renault",
+        "citroen",
+        "byd",
+        "nio",
+        "geely",
+      ];
+
+      let heroPool = [];
+      function refillPool() {
+        heroPool = [...HERO_LOGOS];
+        for (let i = heroPool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [heroPool[i], heroPool[j]] = [heroPool[j], heroPool[i]];
+        }
+      }
+      function nextLogo() {
+        if (heroPool.length === 0) refillPool();
+        return heroPool.pop();
+      }
+
+      const heroImgs = [
+        document.getElementById("heroCar0"),
+        document.getElementById("heroCar1"),
+      ];
+      let activeHero = 0;
+
+      // 초기 로고 세팅
+      refillPool();
+      heroImgs[0].src = `logos/${nextLogo()}_logo.png`;
+      heroImgs[1].src = `logos/${nextLogo()}_logo.png`;
+
+      function changeHeroLogo() {
+        const current = heroImgs[activeHero];
+        const next = heroImgs[1 - activeHero];
+
+        // 현재 로고 → 왼쪽으로 밀리며 사라짐
+        current.classList.replace("hero-logo-active", "hero-logo-exit");
+
+        // 다음 로고 → 오른쪽에서 중앙으로 들어옴
+        next.classList.replace("hero-logo-standby", "hero-logo-active");
+
+        activeHero = 1 - activeHero;
+
+        // 전환 끝나면 퇴장한 로고에 다음 이미지 세팅 후 오른쪽 대기로 복귀
+        setTimeout(() => {
+          current.src = `logos/${nextLogo()}_logo.png`;
+          // transition 없이 위치 초기화
+          current.style.transition = "none";
+          current.classList.replace("hero-logo-exit", "hero-logo-standby");
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => {
+              current.style.transition = "";
+            }),
+          );
+        }, 850);
+      }
+
+      setInterval(changeHeroLogo, 3500);
+
+      /* ── [1] 기능 초기화 ──────────────────────────── */
+      initWorldMap(); // 세계지도 비동기 로드 & 렌더링
+      renderAllCountrySections(); // 국가별 브랜드 카드 렌더링
+      renderBrandHierarchy(); // 브랜드 계통도 렌더링
+
+      /* ── [2] 스크롤 진행 바 (history.html에서 가져온 효과) ─── */
+      // 스크롤 위치를 전체 문서 높이에 대한 비율로 계산해 골드 바 너비로 표현
+      const progressBar = document.getElementById("scroll-progress");
+      window.addEventListener("scroll", () => {
+        const scrolled = window.scrollY;
+        const total =
+          document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.width = (scrolled / total) * 100 + "%";
+      });
+
+      /* ── [3] 섹션 reveal 애니메이션 (history.html에서 가져온 효과) ─ */
+      // IntersectionObserver: 섹션이 화면에 12% 이상 들어오면 .visible 추가
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              // 한 번 나타난 뒤에는 관찰 중단 (성능 최적화)
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+
+      // .reveal 클래스가 붙은 모든 섹션을 관찰 대상으로 등록
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObserver.observe(el));
+    </script>
+  </body>
+</html>
