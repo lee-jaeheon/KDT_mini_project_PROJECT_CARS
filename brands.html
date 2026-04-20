@@ -68,8 +68,7 @@
           <p class="museum-hero-desc">
             전 세계 자동차 산업을 이끄는 51개 주요 브랜드를 국가별로
             만나보세요.<br />
-            각 브랜드의 탄생 이야기, 역사, 그리고 오늘의 모습까지 깊이 있게
-            살펴봅니다.
+            탄생 배경부터 오늘의 모습까지, 주요 브랜드를 한눈에.
           </p>
         </div>
         <div class="museum-hero-car">
@@ -81,6 +80,11 @@
             alt=""
           />
         </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <div class="scroll-line"></div>
+        scroll
       </div>
     </section>
 
@@ -121,7 +125,33 @@
       <!-- [섹션 3] 국가별 브랜드 카드 — brands_cards.js가 채워 넣음 -->
       <div class="section reveal">
         <div class="section-label">Brands by Country · 국가별 브랜드</div>
-        <div id="countrySections"></div>
+
+        <!-- 필터 + 검색 한 줄 -->
+        <div class="brand-filter-bar">
+          <div class="brand-filter-buttons">
+            <button class="filter-btn active" onclick="setFilter('ALL', this)">전체</button>
+            <button class="filter-btn" onclick="setFilter('KR', this)">대한민국</button>
+            <button class="filter-btn" onclick="setFilter('JP', this)">일본</button>
+            <button class="filter-btn" onclick="setFilter('CN', this)">중국</button>
+            <button class="filter-btn" onclick="setFilter('DE', this)">독일</button>
+            <button class="filter-btn" onclick="setFilter('IT', this)">이탈리아</button>
+            <button class="filter-btn" onclick="setFilter('FR', this)">프랑스</button>
+            <button class="filter-btn" onclick="setFilter('SE', this)">스웨덴</button>
+            <button class="filter-btn" onclick="setFilter('GB', this)">영국</button>
+            <button class="filter-btn" onclick="setFilter('US', this)">미국</button>
+          </div>
+          <input
+            type="text"
+            id="brandSearch"
+            class="brand-search-input"
+            placeholder="브랜드 검색..."
+            oninput="filterBrands()"
+          />
+        </div>
+
+        <!-- 카드 그리드 -->
+        <div id="brandGrid" class="brand-grid"></div>
+        <div id="brandNoResult" class="brand-no-result" style="display:none">검색 결과가 없습니다.</div>
       </div>
 
       <!-- [섹션 3-5] 브랜드 계통도 — brands_hierarchy.js가 채워 넣음 -->

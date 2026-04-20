@@ -109,6 +109,7 @@ const allBrands = [
   },
   {
     name: "KG모빌리티",
+    namePronunciation: "케이지모빌리티",
     nameEn: "KG MOBILITY",
     logoFile: "kgmobility",
     country: "KR",
@@ -382,6 +383,7 @@ const allBrands = [
   },
   {
     name: "MINI",
+    namePronunciation: "미니",
     nameEn: "MINI",
     logoFile: "mini",
     country: "GB",
@@ -710,6 +712,7 @@ const allBrands = [
   },
   {
     name: "DS 오토모빌",
+    namePronunciation: "디에스 오토모빌",
     nameEn: "DS AUTOMOBILES",
     logoFile: "ds",
     country: "FR",

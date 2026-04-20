@@ -4,7 +4,6 @@
    * 모든 색상/폰트는 theme.css의 CSS 변수(--color-xxx, --font-xxx)를 재사용
 ================================================================ */
 
-
 /* ================================================================
    [0] 뮤지엄 히어로 — history.html 스타일 참고 (풀스크린 인트로)
 ================================================================ */
@@ -30,7 +29,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding-top: 40px;   /* 네비게이션 바 높이 보정 */
+  padding-top: 40px; /* 네비게이션 바 높이 보정 */
 }
 
 /* 우측 차량 이미지 — 절대 위치로 배치 */
@@ -48,8 +47,9 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              opacity 0.8s ease;
+  transition:
+    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.8s ease;
 }
 
 /* 중앙에 보이는 상태 */
@@ -73,29 +73,37 @@
 }
 
 @keyframes heroCar {
-  from { opacity: 0; transform: translateX(60px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* 배경 이미지 자리 — images/brands_hero_bg.jpg 파일을 넣으면 적용됨 */
 .museum-hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url('images/brands_hero_bg.jpg');
+  background-image: url("images/brands_hero_bg.jpg");
   background-size: cover;
   background-position: center;
-  background-color: #0a0920;   /* 이미지 없을 때 기본 어두운 색 */
+  background-color: #0a0920; /* 이미지 없을 때 기본 어두운 색 */
   filter: brightness(0.45);
   transform: scale(1.04);
   transition: transform 8s ease;
 }
 
 /* 호버 시 배경이 천천히 커지는 Ken Burns 효과 */
-.museum-hero:hover .museum-hero-bg { transform: scale(1); }
+.museum-hero:hover .museum-hero-bg {
+  transform: scale(1);
+}
 
 /* 하단 그라디언트 페이드 — 히어로와 본문 섹션의 자연스러운 연결 */
 .museum-hero::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -128,7 +136,7 @@
 
 /* 태그 앞 골드 가로선 */
 .museum-tag::before {
-  content: '';
+  content: "";
   display: block;
   width: 32px;
   height: 1px;
@@ -140,7 +148,7 @@
   font-family: var(--font-display);
   font-size: clamp(52px, 6.5vw, 92px);
   color: var(--color-text-primary);
-  line-height: 1.0;
+  line-height: 1;
   letter-spacing: 0.02em;
   margin-bottom: 20px;
 }
@@ -178,10 +186,16 @@
 }
 
 @keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(1); }
-  50%       { opacity: 1;   transform: scaleY(1.1); }
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.1);
+  }
 }
-
 
 /* ================================================================
    [A] 세계지도 섹션
@@ -194,7 +208,7 @@
   border-radius: var(--radius-lg);
   padding: 32px;
   margin-top: 20px;
-  position: relative;  /* 툴팁/줌 버튼의 absolute 기준점 */
+  position: relative; /* 툴팁/줌 버튼의 absolute 기준점 */
 }
 
 /* 지도 상단 요약 바 */
@@ -233,9 +247,9 @@
 .map-container {
   position: relative;
   width: 100%;
-  overflow: hidden;          /* 지도가 줌될 때 박스 밖으로 넘치지 않도록 */
+  overflow: hidden; /* 지도가 줌될 때 박스 밖으로 넘치지 않도록 */
   border-radius: var(--radius-md);
-  background: rgba(0, 0, 0, 0.15);   /* 아주 살짝 어두운 바다색 느낌 */
+  background: rgba(0, 0, 0, 0.15); /* 아주 살짝 어두운 바다색 느낌 */
 }
 
 .world-map {
@@ -245,7 +259,9 @@
   cursor: default;
 }
 
-.world-map:active { cursor: grabbing; }
+.world-map:active {
+  cursor: grabbing;
+}
 
 /* 국가 path 기본 스타일 — D3가 생성한 path에 적용 */
 .world-map .country {
@@ -253,7 +269,7 @@
   stroke: rgba(255, 255, 255, 0.18);
   stroke-width: 0.5;
   transition: fill 0.2s;
-  vector-effect: non-scaling-stroke;  /* 줌 해도 테두리 굵기 일정 유지 */
+  vector-effect: non-scaling-stroke; /* 줌 해도 테두리 굵기 일정 유지 */
 }
 
 /* 브랜드 본사가 있는 국가는 살짝 밝은 골드 틴트로 강조 */
@@ -280,8 +296,14 @@
 }
 
 @keyframes markerPulse {
-  0%   { transform: scale(1);   opacity: 0.7; }
-  100% { transform: scale(1.6); opacity: 0;   }
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 /* ② 외부 링 — 항상 보이는 테두리 원 */
@@ -291,7 +313,9 @@
   stroke-width: 1.5px;
   vector-effect: non-scaling-stroke;
   opacity: 0.75;
-  transition: stroke 0.15s, opacity 0.15s;
+  transition:
+    stroke 0.15s,
+    opacity 0.15s;
 }
 
 /* ③ 내부 점 — 중심 채워진 원 */
@@ -302,13 +326,12 @@
 
 /* 호버 시 흰색으로 강조 */
 .world-map .marker-group:hover .marker-ring {
-  stroke: #FFFFFF;
+  stroke: #ffffff;
   opacity: 1;
 }
 .world-map .marker-group:hover .marker-dot {
-  fill: #FFFFFF;
+  fill: #ffffff;
 }
-
 
 /* 지도 툴팁 */
 .map-tooltip {
@@ -329,7 +352,9 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-.map-tooltip.show { opacity: 1; }
+.map-tooltip.show {
+  opacity: 1;
+}
 
 .map-tooltip-country {
   font-family: var(--font-display);
@@ -343,7 +368,6 @@
   font-weight: 600;
   color: var(--color-text-primary);
 }
-
 
 /* 줌 컨트롤 버튼 — 지도 우상단에 플로팅 */
 .zoom-controls {
@@ -380,11 +404,15 @@
   color: var(--color-gold);
 }
 
-.zoom-btn:active { transform: scale(0.95); }
+.zoom-btn:active {
+  transform: scale(0.95);
+}
 
 /* 리셋 버튼은 조금 작은 글씨 */
-.zoom-btn.zoom-reset { font-size: 11px; letter-spacing: 0.1em; }
-
+.zoom-btn.zoom-reset {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
 
 /* 지도 하단 힌트 */
 .map-hint {
@@ -406,7 +434,6 @@
   letter-spacing: 0.15em;
   font-size: 14px;
 }
-
 
 /* ================================================================
    [B] 국가별 브랜드 섹션
@@ -437,12 +464,82 @@
   margin-left: auto;
 }
 
-
 /* ================================================================
    [C] 브랜드 카드 그리드 & 카드
 ================================================================ */
 
 /* 4열 고정 — 나라마다 브랜드 수가 달라도 카드 크기가 항상 동일 */
+/* 필터 + 검색 한 줄 */
+.brand-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.brand-filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+}
+
+.brand-search-input {
+  width: 310px;
+  flex-shrink: 0;
+  padding: 10px 16px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.brand-search-input:focus {
+  border-color: var(--color-gold);
+}
+
+.brand-search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.filter-btn {
+  padding: 7px 16px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: var(--color-gold);
+  color: var(--color-text-primary);
+}
+
+.filter-btn.active {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: #000;
+  font-weight: 600;
+}
+
+/* 검색 결과 없음 */
+.brand-no-result {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  padding: 60px 0;
+}
+
 .brand-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -472,9 +569,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-sm);
-  overflow: hidden;    /* 이미지가 박스 밖으로 넘치지 않도록 */
+  overflow: hidden; /* 이미지가 박스 밖으로 넘치지 않도록 */
   padding: 10px 16px;
 }
 
@@ -489,7 +586,7 @@
 
 /* 이미지 로드 실패 시 보여줄 텍스트 폴백 — 평소에는 숨겨둠 */
 .brand-logo-fallback {
-  display: none;       /* onerror 시 JS로 flex로 전환 */
+  display: none; /* onerror 시 JS로 flex로 전환 */
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -497,7 +594,7 @@
   font-family: var(--font-display);
   font-size: 18px;
   letter-spacing: 0.08em;
-  color: #151350;      /* 흰 배경 위에 진한 네이비 텍스트 */
+  color: #151350; /* 흰 배경 위에 진한 네이비 텍스트 */
   text-align: center;
 }
 
@@ -518,14 +615,14 @@
   font-size: 12px;
   color: var(--color-text-secondary);
   line-height: 1.75;
-  flex: 1;   /* 설명이 길어도 카드 높이를 일정하게 유지 */
+  flex: 1; /* 설명이 길어도 카드 높이를 일정하게 유지 */
 }
 
 /* 핵심 키워드 태그 — history.html brand-tag 스타일 참고 */
 .brand-keyword {
   display: inline-block;
-  background: rgba(184, 169, 106, 0.10);
-  border: 1px solid rgba(184, 169, 106, 0.30);
+  background: rgba(184, 169, 106, 0.1);
+  border: 1px solid rgba(184, 169, 106, 0.3);
   border-radius: var(--radius-pill);
   padding: 4px 12px;
   font-size: 10px;
@@ -544,7 +641,9 @@
   color: var(--color-gold);
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity 0.25s, transform 0.25s;
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
   margin-top: auto;
   text-align: right;
 }
@@ -554,13 +653,16 @@
   transform: translateY(0);
 }
 
-
 /* ================================================================
    [D] 삼보모터스 특별 섹션
 ================================================================ */
 
 .sambo-highlight {
-  background: linear-gradient(135deg, rgba(43, 108, 184, 0.12) 0%, rgba(95, 163, 224, 0.04) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(43, 108, 184, 0.12) 0%,
+    rgba(95, 163, 224, 0.04) 100%
+  );
   border: 1px solid var(--color-border-sambo);
   border-radius: var(--radius-lg);
   padding: 48px;
@@ -640,7 +742,6 @@
   line-height: 1.6;
 }
 
-
 /* ================================================================
    [F] history.html에서 가져온 인터랙션 효과
 ================================================================ */
@@ -652,17 +753,23 @@
   left: 0;
   height: 2px;
   width: 0%;
-  background: linear-gradient(90deg, var(--color-gold), rgba(184, 169, 106, 0.5));
+  background: linear-gradient(
+    90deg,
+    var(--color-gold),
+    rgba(184, 169, 106, 0.5)
+  );
   z-index: 9999;
   transition: width 0.08s linear;
-  pointer-events: none;   /* 클릭 이벤트 통과 */
+  pointer-events: none; /* 클릭 이벤트 통과 */
 }
 
 /* 스크롤 reveal 애니메이션 — 섹션이 뷰포트에 들어올 때 페이드업 */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.65s ease, transform 0.65s ease;
+  transition:
+    opacity 0.65s ease,
+    transform 0.65s ease;
 }
 .reveal.visible {
   opacity: 1;
@@ -690,14 +797,19 @@
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  transition: border-color 0.25s, transform 0.25s, background 0.25s;
+  transition:
+    border-color 0.25s,
+    transform 0.25s,
+    background 0.25s;
 }
 .next-chapter-link:hover .next-chapter-card {
   border-color: rgba(184, 169, 106, 0.5);
   background: rgba(28, 26, 104, 0.85);
   transform: translateY(-4px);
 }
-.next-chapter-left { flex: 1; }
+.next-chapter-left {
+  flex: 1;
+}
 .next-chapter-tag {
   font-size: 10px;
   font-weight: 600;
@@ -727,7 +839,6 @@
   transform: translateX(6px);
 }
 
-
 /* ================================================================
    [F-2] 게임 런처 버튼 (brands.html → brands_game.html)
 ================================================================ */
@@ -749,7 +860,10 @@
   border-radius: var(--radius-md);
   text-decoration: none;
   text-align: center;
-  transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
+  transition:
+    border-color 0.2s,
+    transform 0.25s,
+    box-shadow 0.25s;
 }
 
 .game-launch-btn:hover {
@@ -776,7 +890,6 @@
   letter-spacing: 0.04em;
   line-height: 1.6;
 }
-
 
 /* ================================================================
    [G] 반응형
@@ -827,7 +940,9 @@
   text-transform: uppercase;
 }
 
-.hrc-independent .hrc-root-en { color: var(--color-text-muted); }
+.hrc-independent .hrc-root-en {
+  color: var(--color-text-muted);
+}
 
 .hrc-root-count {
   font-size: 10px;
@@ -850,7 +965,9 @@
   opacity: 0.45;
 }
 
-.hrc-independent .hrc-connector-v { background: var(--color-border); }
+.hrc-independent .hrc-connector-v {
+  background: var(--color-border);
+}
 
 .hrc-connector-h {
   width: 90%;
@@ -859,7 +976,9 @@
   opacity: 0.45;
 }
 
-.hrc-independent .hrc-connector-h { background: var(--color-border); }
+.hrc-independent .hrc-connector-h {
+  background: var(--color-border);
+}
 
 .hrc-brands {
   display: flex;
@@ -882,7 +1001,9 @@
   opacity: 0.45;
 }
 
-.hrc-independent .hrc-brand-tick { background: var(--color-border); }
+.hrc-independent .hrc-brand-tick {
+  background: var(--color-border);
+}
 
 .hrc-brand-box {
   width: 68px;
@@ -916,37 +1037,77 @@
   padding: 0 4px;
 }
 
-
 /* ================================================================
    [G] 반응형
 ================================================================ */
 
 @media (max-width: 768px) {
   /* 계통도 */
-  .hrc-brand { width: 80px; }
-  .hrc-brand-box { width: 54px; height: 54px; }
-  .hrc-connector-h { width: 95%; }
-  .hrc-brands { width: 95%; }
+  .hrc-brand {
+    width: 80px;
+  }
+  .hrc-brand-box {
+    width: 54px;
+    height: 54px;
+  }
+  .hrc-connector-h {
+    width: 95%;
+  }
+  .hrc-brands {
+    width: 95%;
+  }
 
   /* 히어로 */
-  .museum-hero { padding: 0 24px 60px; }
-  .museum-hero-title { font-size: 52px; }
-  .museum-hero-car { display: none; }
+  .museum-hero {
+    padding: 0 24px 60px;
+  }
+  .museum-hero-title {
+    font-size: 52px;
+  }
+  .museum-hero-car {
+    display: none;
+  }
 
   /* 지도 */
-  .map-wrapper { padding: 20px; }
-  .map-stats { gap: 24px; }
-  .map-stat-value { font-size: 26px; }
+  .map-wrapper {
+    padding: 20px;
+  }
+  .map-stats {
+    gap: 24px;
+  }
+  .map-stat-value {
+    font-size: 26px;
+  }
 
   /* 카드 */
-  .brand-grid { grid-template-columns: repeat(2, 1fr); }
+  .brand-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   /* 기타 */
-  .sambo-highlight { padding: 28px; }
-  .sambo-header { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .sambo-logo-img { height: 60px; }
-  .sambo-items { grid-template-columns: 1fr 1fr; }
-  .country-header { flex-wrap: wrap; }
-  .next-chapter-card { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
-  .next-chapter-arrow { align-self: flex-end; }
+  .sambo-highlight {
+    padding: 28px;
+  }
+  .sambo-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .sambo-logo-img {
+    height: 60px;
+  }
+  .sambo-items {
+    grid-template-columns: 1fr 1fr;
+  }
+  .country-header {
+    flex-wrap: wrap;
+  }
+  .next-chapter-card {
+    padding: 28px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .next-chapter-arrow {
+    align-self: flex-end;
+  }
 }

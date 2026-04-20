@@ -11,7 +11,11 @@
    [1] 상수 & 국가 이모지
 ============================================================ */
 
-const TOTAL_ROUNDS = 10;
+const ROUNDS_CHO     = 10;
+const ROUNDS_COUNTRY = 9;
+function getTotalRounds() {
+  return state.game === "country" ? ROUNDS_COUNTRY : ROUNDS_CHO;
+}
 
 const COUNTRY_FLAGS = {
   KR: "🇰🇷",
@@ -125,11 +129,11 @@ function nextQuestion() {
   state.answered = false;
 
   document.getElementById("roundDisplay").textContent =
-    `${state.round} / ${TOTAL_ROUNDS}`;
+    `${state.round} / ${getTotalRounds()}`;
   document.getElementById("scoreDisplay").textContent =
     `${state.score}점`;
 
-  const pct = ((state.round - 1) / TOTAL_ROUNDS) * 100;
+  const pct = ((state.round - 1) / getTotalRounds()) * 100;
   document.getElementById("progressFill").style.width = pct + "%";
 
   document.getElementById("feedbackArea").innerHTML = "";
@@ -246,7 +250,7 @@ function submitChoAnswer() {
   const nextBtn = document.getElementById("nextBtn");
   nextBtn.style.display = "block";
   nextBtn.textContent =
-    state.round >= TOTAL_ROUNDS ? "결과 보기 →" : "다음 문제 →";
+    state.round >= getTotalRounds() ? "결과 보기 →" : "다음 문제 →";
 }
 
 
@@ -285,7 +289,6 @@ function renderCountryQuestion() {
   // ── 질문 영역 ──
   document.getElementById("questionArea").innerHTML = `
     <div class="country-question">
-      <div class="country-flag">${COUNTRY_FLAGS[country]}</div>
       <div class="country-name">${info.nameKo}</div>
       <p class="question-label">이 나라의 자동차 브랜드는?</p>
     </div>
@@ -339,7 +342,7 @@ function selectChoice(selectedIdx) {
   const nextBtn = document.getElementById("nextBtn");
   nextBtn.style.display = "block";
   nextBtn.textContent =
-    state.round >= TOTAL_ROUNDS ? "결과 보기 →" : "다음 문제 →";
+    state.round >= getTotalRounds() ? "결과 보기 →" : "다음 문제 →";
 }
 
 
@@ -348,7 +351,7 @@ function selectChoice(selectedIdx) {
 ============================================================ */
 
 function handleNext() {
-  if (state.round >= TOTAL_ROUNDS) showResult();
+  if (state.round >= getTotalRounds()) showResult();
   else nextQuestion();
 }
 
@@ -361,7 +364,7 @@ function showResult() {
   showScreen("resultScreen");
   document.getElementById("progressFill").style.width = "100%";
 
-  const pct = state.score / TOTAL_ROUNDS;
+  const pct = state.score / getTotalRounds();
   const R = 90;
   const CIRC = 2 * Math.PI * R; // ≈ 565.49
 
@@ -374,7 +377,7 @@ function showResult() {
           stroke-dashoffset="${CIRC.toFixed(2)}"/>
       </svg>
       <div class="result-ring-text">
-        <span class="result-num">${state.score}</span><span class="result-sep">/${TOTAL_ROUNDS}</span>
+        <span class="result-num">${state.score}</span><span class="result-sep">/${getTotalRounds()}</span>
       </div>
     </div>
   `;
@@ -386,6 +389,12 @@ function showResult() {
       if (ring) ring.style.strokeDashoffset = CIRC * (1 - pct);
     });
   });
+
+  // 반대 게임 버튼 텍스트 설정
+  const otherBtn = document.getElementById("otherGameBtn");
+  if (otherBtn) {
+    otherBtn.textContent = state.game === "cho" ? "국가별 브랜드 퀴즈" : "초성 퀴즈";
+  }
 }
 
 
@@ -393,8 +402,8 @@ function showResult() {
    [13] 버튼 이벤트
 ============================================================ */
 
-function restartGame()   { startGame(state.game); }
-function goToSelection() { showScreen("selectionScreen"); }
+function restartGame()    { startGame(state.game); }
+function goToOtherGame()  { startGame(state.game === "cho" ? "country" : "cho"); }
 
 // 게임 진행 중 나가기 — 확인 후 브랜드 페이지로 이동
 function confirmExit() {
