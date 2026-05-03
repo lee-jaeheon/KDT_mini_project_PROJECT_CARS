@@ -13,3 +13,9 @@ function showSlide(n) {
 }
 
 setInterval(() => showSlide(current + 1), 4500);
+
+function setVh() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+}
+setVh();
+window.addEventListener('resize', setVh);
