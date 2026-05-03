@@ -45,7 +45,7 @@
 
 .hero-title {
   font-family: 'Audiowide', sans-serif;
-  font-size: clamp(64px, 10vw, 130px);
+  font-size: clamp(32px, 8vw, 140px);
   color: #ffffff;
   line-height: 1;
   letter-spacing: 0.04em;
